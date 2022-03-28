@@ -17,6 +17,7 @@ contract DEX {
 
     using SafeMath for uint256; //outlines use of SafeMath for uint256 variables
     IERC20 token; //instantiates the imported contract
+    mapping (address => uint256) liquidity;
 
     /* ========== EVENTS ========== */
 
@@ -42,7 +43,7 @@ contract DEX {
 
     /* ========== CONSTRUCTOR ========== */
 
-    constructor(address token_addr) public {
+    constructor(address token_addr) {
         token = IERC20(token_addr); //specifies the token address that will hook into the interface and be used through the variable 'token'
     }
 
