@@ -79,10 +79,8 @@ contract DEX {
         uint256 multiplier = 1000; // multiply everything so we can deduct a fee without going into floating points
         uint256 fee = 997;  // TODO: should probably be a global variable
         uint256 xReserves_m = xReserves.mul(multiplier);
-        uint256 yReserves_m = yReserves.mul(1);  // No multiplier so that we do not have to divide by the multiplier in the last step
         uint256 xInput_f = xInput.mul(fee);
-        uint256 yOutput_m = xInput_f*yReserves_m/xReserves_m.add(xInput_f);
-        yOutput = yOutput_m;
+        yOutput = xInput_f*yReserves/xReserves_m.add(xInput_f);  // No multiplier for yReserves so that we do not have to divide by the multiplier in the end.
     }
 
     /**
