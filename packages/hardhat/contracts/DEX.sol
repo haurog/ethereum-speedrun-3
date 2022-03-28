@@ -4,6 +4,7 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "hardhat/console.sol";
 
 /**
  * @title DEX Template
@@ -74,7 +75,15 @@ contract DEX {
         uint256 xInput,
         uint256 xReserves,
         uint256 yReserves
-    ) public view returns (uint256 yOutput) {}
+    ) public view returns (uint256 yOutput) {
+        uint256 multiplier = 1000; // multiply everything so we can deduct a fee without going into floating points
+        uint256 fee = 997;  // TODO: should probably be a global variable
+        uint256 xReserves_m = xReserves.mul(multiplier);
+        uint256 yReserves_m = yReserves.mul(1);  // No multiplier so that we do not have to divide by the multiplier in the last step
+        uint256 xInput_f = xInput.mul(fee);
+        uint256 yOutput_m = xInput_f*yReserves_m/xReserves_m.add(xInput_f);
+        yOutput = yOutput_m;
+    }
 
     /**
      * @notice returns liquidity for a user. Note this is not needed typically due to the `liquidity()` mapping variable being public and having a getter as a result. This is left though as it is used within the front end code (App.jsx).
