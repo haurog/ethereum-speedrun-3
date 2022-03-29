@@ -147,9 +147,11 @@ contract DEX {
         require(amount <= liquidity[msg.sender], "More liquidity requested than was provided");
         uint256 ethReserves = address(this).balance;
         uint256 tokenReserves = token.balanceOf(address(this));
+
         uint256 ethToWithdraw = (ethReserves * amount) / totalLiquidity;
         uint256 tokenToWithdraw = (tokenReserves * ethToWithdraw) / ethReserves;
-        console.log("ETH and token: ", ethToWithdraw, tokenToWithdraw);
+        // console.log("eth and token: ", ethToWithdraw, tokenToWithdraw);
+
         totalLiquidity -= amount;
         liquidity[msg.sender] -= amount;
         (bool sent, ) = msg.sender.call{value: ethToWithdraw}("");
