@@ -126,14 +126,14 @@ contract DEX {
      */
     function deposit() public payable returns (uint256 tokensDeposited) {
         require(msg.value > 0, "Need Eth to deposit.");
-        uint256 ethReserves = address(this).balance.sub(msg.value);
+        uint256 ethReserves = address(this).balance - msg.value;
         uint256 tokenReserves = token.balanceOf(address(this));
         uint256 tokensToDeposit = (tokenReserves * msg.value) / ethReserves ;
         uint256 liquidityMinted = (totalLiquidity * msg.value) / ethReserves;
         totalLiquidity += msg.value;
         liquidity[msg.sender] += msg.value;
-        bool succeded = token.transferFrom(msg.sender, address(this), tokensToDeposit);
-        require(succeded, "Tokens could not be transferred to liquidity pool.");
+        bool succeeded = token.transferFrom(msg.sender, address(this), tokensToDeposit);
+        require(succeeded, "Tokens could not be transferred to liquidity pool.");
         emit LiquidityProvided(msg.sender, liquidityMinted, msg.value, tokensToDeposit);
         return tokensToDeposit;
     }
@@ -147,7 +147,7 @@ contract DEX {
         require(amount <= liquidity[msg.sender], "More liquidity requested than was provided");
         uint256 ethReserves = address(this).balance;
         uint256 tokenReserves = token.balanceOf(address(this));
-        uint256 ethToWithdraw = (totalLiquidity * amount) / ethReserves;
+        uint256 ethToWithdraw = (ethReserves * amount) / totalLiquidity;
         uint256 tokenToWithdraw = (tokenReserves * ethToWithdraw) / ethReserves;
         console.log("ETH and token: ", ethToWithdraw, tokenToWithdraw);
         totalLiquidity -= amount;
