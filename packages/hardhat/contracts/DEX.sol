@@ -27,12 +27,12 @@ contract DEX {
     /**
      * @notice Emitted when ethToToken() swap transacted
      */
-    event EthToTokenSwap(address, string, uint256, uint256);
+    event EthToTokenSwap(address sender, string message, uint256 valueIn, uint256 valueOut);
 
     /**
      * @notice Emitted when tokenToEth() swap transacted
      */
-    event TokenToEthSwap(address, string, uint256, uint256);
+    event TokenToEthSwap(address sender, string message, uint256 valueIn, uint256 valueOut);
 
     /**
      * @notice Emitted when liquidity provided to DEX and mints LPTs.
