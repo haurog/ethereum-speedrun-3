@@ -101,9 +101,9 @@ contract DEX {
     ) public pure returns (uint256 yOutput) {
         uint256 multiplier = 1000; // multiply everything so we can deduct a fee without going into floating points
         uint256 fee = 997; // TODO: should probably be a global variable
-        uint256 xReserves_m = xReserves.mul(multiplier);
-        uint256 xInput_f = xInput.mul(fee);
-        yOutput = (xInput_f * yReserves) / xReserves_m.add(xInput_f); // No multiplier for yReserves so that we do not have to divide by the multiplier in the end.
+        uint256 xReserves_m = xReserves * multiplier;
+        uint256 xInput_f = xInput * fee;
+        yOutput = (xInput_f * yReserves) / (xReserves_m + xInput_f); // No multiplier for yReserves so that we do not have to divide by the multiplier in the end.
     }
 
     /**
@@ -118,7 +118,7 @@ contract DEX {
      */
     function ethToToken() public payable returns (uint256 tokenOutput) {
         require(msg.value > 0, "Need ETH to swap to token.");
-        uint256 ethReserves = address(this).balance.sub(msg.value);
+        uint256 ethReserves = address(this).balance - msg.value;
         uint256 tokenReserves = token.balanceOf(address(this));
         tokenOutput = price(msg.value, ethReserves, tokenReserves);
         bool succeeded = token.transfer(msg.sender, tokenOutput);
