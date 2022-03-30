@@ -19,6 +19,7 @@ describe("🚩 Challenge 3: ⚖️ 🪙 Simple DEX", function () {
   let deployer;
   let user2;
   let user3;
+  let provider;
 
   // assign 'signer' addresses as object properties (Strings) to user array --> this is so we have signers ready to test this thing.
   before(async function () {
@@ -29,6 +30,7 @@ describe("🚩 Challenge 3: ⚖️ 🪙 Simple DEX", function () {
       for (const signer of signers) {
         accounts.push({ signer, address: await signer.getAddress() });
       } //populates the accounts array with addresses.
+      provider = await ethers.getDefaultProvider();
       return accounts;
     };
 
@@ -103,7 +105,9 @@ describe("🚩 Challenge 3: ⚖️ 🪙 Simple DEX", function () {
             value: ethers.utils.parseEther("1"),
           });
           // TODO: SYNTAX - Figure out how to read eth balance of dex contract and to compare it against the eth sent in via this tx. Also figure out why/how to read the event that should be emitted with this too.
-
+          console.log("------------------------------------");
+          balance = await provider.getBalance(dexContract.address);
+          console.log(balance.toString());
           expect(
             await ethers.BigNumber.from(dexContract.address.balance)
           ).to.equal(ethers.utils.parseEther("6"));
