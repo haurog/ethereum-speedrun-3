@@ -167,8 +167,8 @@ contract DEX {
         uint256 tokenReserves = token.balanceOf(address(this));
         uint256 tokensToDeposit = (tokenReserves * msg.value) / ethReserves;
         uint256 liquidityMinted = (totalLiquidity * msg.value) / ethReserves;
-        totalLiquidity += msg.value;
-        liquidity[msg.sender] += msg.value;
+        totalLiquidity += liquidityMinted;
+        liquidity[msg.sender] += liquidityMinted;
         bool succeeded = token.transferFrom(
             msg.sender,
             address(this),
