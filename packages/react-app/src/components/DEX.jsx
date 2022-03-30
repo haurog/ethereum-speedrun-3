@@ -114,7 +114,7 @@ export default function Dex(props) {
             props.readContracts[contractName].address,
           );
           console.log("allowance", allowance);
-          if (allowance.lt(valuePlusExtra)) {
+          if (allowance.lt(valuePlusExtra)) {  // TODO: In asymmetric ETH/BAL liquidity this leads to failed transactions.
             await tx(
               writeContracts[tokenName].approve(props.readContracts[contractName].address, valuePlusExtra, {
                 gasLimit: 200000,
