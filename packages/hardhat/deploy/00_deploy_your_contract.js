@@ -37,11 +37,11 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const dex = await ethers.getContract("DEX", deployer);
 
   // paste in your front-end address here to get 10 balloons on deploy:
-  await balloons.transfer(
-    "0x7dA4bbbE0f4e7c604A8e5e9f289D00199dA5d747",
-    // "0x08C01CEc8B8c793D768f502b604113074CE212aD",
-    "" + 10 * 10 ** 18
-  );
+  // await balloons.transfer(
+  //   "0x7dA4bbbE0f4e7c604A8e5e9f289D00199dA5d747",
+  //   // "0x08C01CEc8B8c793D768f502b604113074CE212aD",
+  //   "" + 10 * 10 ** 18
+  // );
 
   // // uncomment to init DEX on deploy:
   console.log(
@@ -50,8 +50,8 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   // If you are going to the testnet make sure your deployer account has enough ETH
   await balloons.approve(dex.address, ethers.utils.parseEther("100"));
   console.log("INIT exchange...");
-  await dex.init(ethers.utils.parseEther("5"), {
-    value: ethers.utils.parseEther("5"),
+  await dex.init(ethers.utils.parseEther("1"), {
+    value: ethers.utils.parseEther("0.1"),
     gasLimit: 200000,
   });
 };
